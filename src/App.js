@@ -18,40 +18,21 @@ const App = () => {
 
   const handleTranslate = async () => {
     try {
-      const axios = require('axios');
+      const response = await axios.post('http://localhost:5000/translate', {
+        url,
+        sourceLanguage,
+        targetLanguage,
+      });
 
-    const encodedParams = new URLSearchParams();
-    encodedParams.set('q', 'Hello, world!');
-    encodedParams.set('target', 'es');
-    encodedParams.set('source', 'en');
-
-    const options = {
-      method: 'POST',
-      url: 'https://google-translate1.p.rapidapi.com/language/translate/v2',
-      headers: {
-        'content-type': 'application/x-www-form-urlencoded',
-        'Accept-Encoding': 'application/gzip',
-        'X-RapidAPI-Key': 'c6715578fdmshcad20d8bcbd1c44p1955c3jsnec5c6e1449cd',
-        'X-RapidAPI-Host': 'google-translate1.p.rapidapi.com'
-      },
-      data: encodedParams,
-    };
-
-    try {
-      const response = await axios.request(options);
-      console.log(response.data);
+      if (response.status === 200) {
+        const translatedHTML = response.data;
+        // Xử lý kết quả dịch ở đây, ví dụ như hiển thị hoặc lưu vào trạng thái
+        console.log('Translated HTML:', translatedHTML);
+        alert('Translation complete. Check console for the translated HTML.');
+      }
     } catch (error) {
-      console.error(error);
-    }
-      const translatedContent = response.data;
-      const newWindow = window.open();
-      newWindow.document.write(translatedContent);
-      newWindow.document.close();
-
-      // Cập nhật lịch sử
-      setHistory([...history, { url, sourceLanguage, targetLanguage }]);
-    } catch (error) {
-      console.error('Error translating the content:', error);
+      console.error('Error during translation:', error);
+      alert('Translation failed. Please try again.');
     }
   };
 
@@ -91,40 +72,27 @@ const App = () => {
               <div className="mt-6 flex space-x-4">
                 <div className="flex-1">
                   <label htmlFor="source-language" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">Source Language:</label>
-                  <select
+                  <input
+                    type="text"
                     id="source-language"
                     name="source-language"
                     className="shadow focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-zinc-300 rounded-md dark:bg-zinc-700 dark:border-zinc-600 dark:text-white"
+                    placeholder="Enter source language"
                     value={sourceLanguage}
                     onChange={(e) => setSourceLanguage(e.target.value)}
-                  >
-                    <option value="en">English</option>
-                    <option value="es">Spanish</option>
-                    <option value="fr">French</option>
-                    <option value="de">German</option>
-                    <option value="zh">Chinese</option>
-                  </select>
+                  />
                 </div>
                 <div className="flex-1">
                   <label htmlFor="target-language" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">Target Language:</label>
-                  <select
+                  <input
+                    type="text"
                     id="target-language"
                     name="target-language"
                     className="shadow focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-zinc-300 rounded-md dark:bg-zinc-700 dark:border-zinc-600 dark:text-white"
+                    placeholder="Enter target language"
                     value={targetLanguage}
                     onChange={(e) => setTargetLanguage(e.target.value)}
-                  >
-                    <option value="en">English</option>
-                    <option value="es">Spanish</option>
-                    <option value="fr">French</option>
-                    <option value="de">German</option>
-                    <option value="zh">Chinese</option>
-                    <option value="it">Italian</option>
-                    <option value="ja">Japanese</option>
-                    <option value="ru">Russian</option>
-                    <option value="ar">Arabic</option>
-                    <option value="ko">Korean</option>
-                  </select>
+                  />
                 </div>
               </div>
               <div className="mt-6 flex space-x-4">
