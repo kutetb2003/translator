@@ -54,7 +54,7 @@ app.post('/translate', async (req, res) => {
     async function translateText(text, from, to) {
       try {
         const result = await translate(text, { from, to });
-        console.log(result)
+        console.log(result) 
         return result; // Translated text
       } catch (error) {
         console.error('Error during translation:', error);
@@ -99,7 +99,44 @@ app.post('/translate', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+app.get('/history', (req, res) => {
+  const currentDir = __dirname;
+  const history = [];
 
+  // Hàm đệ quy để quét các thư mục
+  function scanDirectory(dir) {
+    const items = fs.readdirSync(dir);
+    
+    for (const item of items) {
+      const fullPath = path.join(dir, item);
+      const stat = fs.statSync(fullPath);
+      
+      if (stat.isDirectory() && item !== 'node_modules') {
+        // Nếu là thư mục và không phải node_modules, quét tiếp
+        scanDirectory(fullPath);
+      } else if (item === 'translatedOutput.html') {
+        // Nếu tìm thấy file translatedOutput.html
+        const relativePath = path.relative(currentDir, fullPath);
+        const content = fs.readFileSync(fullPath, 'utf-8');
+        history.push({
+          path: relativePath,
+          url: `/translated/${encodeURIComponent(relativePath)}` // URL để truy cập file
+        });
+      }
+    }
+  }
+
+  // Bắt đầu quét từ thư mục hiện tại
+  scanDirectory(currentDir);
+
+  res.json(history);
+});
+
+// Thêm route để serve các file HTML đã dịch
+app.get('/translated/:path(*)', (req, res) => {
+  const filePath = path.join(__dirname, req.params.path);
+  res.sendFile(filePath);
+});
 const PORT = 5000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
