@@ -205,18 +205,6 @@ const App = () => {
                 />
               </div>
               <div className="mt-6 flex space-x-4">
-                {/* <div className="flex-1">
-                  <label htmlFor="source-language" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">Source Language:</label>
-                  <input
-                    type="text"
-                    id="source-language"
-                    name="source-language"
-                    className="shadow focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-zinc-300 rounded-md dark:bg-zinc-700 dark:border-zinc-600 dark:text-white"
-                    placeholder="Enter source language"
-                    value={sourceLanguage}
-                    onChange={(e) => setSourceLanguage(e.target.value)}
-                  />
-                </div> */}
                 <div className="flex-1">
                   <label
                     htmlFor="target-language"
@@ -258,23 +246,6 @@ const App = () => {
                     <option value="microsoft">Microsoft Translator</option>
                     <option value="deepl">DeepL</option>
                   </select>
-                </div>
-                <div className="flex-1">
-                  <label
-                    htmlFor="api-token"
-                    className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2"
-                  >
-                    API Token:
-                  </label>
-                  <input
-                    type="text"
-                    id="api-token"
-                    name="api-token"
-                    className="shadow focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-zinc-300 rounded-md dark:bg-zinc-700 dark:border-zinc-600 dark:text-white dark:placeholder-zinc-400"
-                    placeholder="Enter your API token"
-                    value={apiToken}
-                    onChange={(e) => setApiToken(e.target.value)}
-                  />
                 </div>
               </div>
               <div className="mt-6 flex justify-center">
